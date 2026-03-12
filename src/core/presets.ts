@@ -31,14 +31,17 @@ export const PRESETS: Record<BetiPreset, BetiOptions> = {
     inputMode: 'numeric',
     type: 'tel',
     resolveMask: (_value: string, allValues?: any, schema?: any) => {
-       if (!allValues || !schema) return MASKS.CVV_3;
+       if (!allValues || !schema) return undefined;
        
        let cardFieldValue = '';
+       let hasCardField = false;
+
        for (const key in schema) {
           const fieldConfig = schema[key];
           const isCard = fieldConfig === 'card' || (typeof fieldConfig === 'object' && fieldConfig.preset === 'card') || (typeof fieldConfig === 'object' && fieldConfig.mask === MASKS.CARD);
           
           if (isCard) {
+             hasCardField = true;
              const val = allValues[key];
              if (val) {
                 cardFieldValue = String(val).replace(/\D/g, '');
@@ -47,10 +50,14 @@ export const PRESETS: Record<BetiPreset, BetiOptions> = {
           }
        }
        
-       if (cardFieldValue.startsWith('34') || cardFieldValue.startsWith('37')) {
-          return MASKS.CVV_4;
+       if (hasCardField) {
+          if (cardFieldValue.startsWith('34') || cardFieldValue.startsWith('37')) {
+             return MASKS.CVV_4;
+          }
+          return MASKS.CVV_3;
        }
-       return MASKS.CVV_3;
+
+       return undefined;
     }
   },
   tckn: {

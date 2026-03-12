@@ -17,13 +17,11 @@ export function processDefault(
     if (transform === 'uppercase') displayRaw = displayRaw.toUpperCase();
     if (transform === 'lowercase') displayRaw = displayRaw.toLowerCase();
     
-    const trimmedRaw = rawValue.trim();
-    
     const cursorPosition = Math.min(
       selectionStart ?? displayRaw.length,
       displayRaw.length
     );
-    return { value: trimmedRaw, displayValue: displayRaw, cursorPosition, cardType };
+    return { value: rawValue, displayValue: displayRaw, cursorPosition, cardType };
   }
   
   let finalDisplay = rawValue;

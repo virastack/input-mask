@@ -1,6 +1,15 @@
 # Changelog
 
-## [v1.0.0-beta.1] - 2026-02-24
+## [v1.1.0] - 2026-03-12
+
+### Bug Fixes
+
+- **Currency**: Fixed decimal precision issues with Turkish Lira formatting.
+- **CVV**: Fixed input length restriction to correctly support 4 digits for Amex.
+- **Alpha**: Resolved issues with space character handling.
+- **Email**: Prevented validation errors from triggering immediately while typing.
+
+## [v1.0.0] - 2026-02-24
 
 ### Improvements
 

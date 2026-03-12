@@ -8,11 +8,11 @@
 
 Beti is a high-performance, ultra-lightweight (<5KB) masking library designed for modern React applications. It provides a seamless way to handle complex input masking while keeping your form state clean and your UI butter-smooth.
 
-![npm](https://img.shields.io/npm/v/beti)
-![bundlephobia](https://img.shields.io/bundlephobia/minzip/beti)
-![types](https://img.shields.io/npm/types/beti)
-![license](https://img.shields.io/npm/l/beti)
-![npm downloads](https://img.shields.io/npm/dw/beti)
+![npm](https://img.shields.io/npm/v/@vassale/beti)
+![bundlephobia](https://img.shields.io/bundlephobia/minzip/@vassale/beti)
+![types](https://img.shields.io/npm/types/@vassale/beti)
+![license](https://img.shields.io/npm/l/@vassale/beti)
+![npm downloads](https://img.shields.io/npm/dw/@vassale/beti)
 
 ## 🚀 Live Demo & Documentation
 
@@ -37,7 +37,7 @@ Most masking libraries are heavy, manipulate the DOM directly, or mess up the cu
 ## 🚀 Installation
 
 ```bash
-npm install beti
+npm install @vassale/beti
 ```
 
 ## 🛠️ Quick Start
@@ -45,7 +45,7 @@ npm install beti
 Beti uses a Schema-based approach to keep your JSX clean. Define your masks once, and spread them into your inputs.
 
 ```tsx
-import { useBeti } from 'beti';
+import { useBeti } from '@vassale/beti';
 import { useForm } from 'react-hook-form';
 
 const MyForm = () => {

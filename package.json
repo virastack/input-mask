@@ -1,16 +1,16 @@
 {
-  "name": "beti",
-  "version": "1.0.0-beta.1",
+  "name": "@vassale/beti",
+  "version": "1.1.0",
   "description": "A lightweight, zero-dependency masking library for React Hook Form",
   "author": "Ömer Gülçiçek <iletisim@omergulcicek.com> (https://omergulcicek.com)",
   "license": "MIT",
   "homepage": "https://beti.omergulcicek.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/omergulcicek/beti.git"
+    "url": "git+https://github.com/vassale/beti.git"
   },
   "bugs": {
-    "url": "https://github.com/omergulcicek/beti/issues"
+    "url": "https://github.com/vassale/beti/issues"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

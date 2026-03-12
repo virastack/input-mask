@@ -45,9 +45,15 @@ export function processCurrency(
   selectionStart: number | null,
   cardType?: 'visa' | 'mastercard' | 'amex' | 'troy' | 'unknown'
 ) {
-  const { decimalSeparator = ',', precision = 2 } = currency;
+  const { decimalSeparator = ',', thousandSeparator = '.', precision = 2 } = currency;
   
-  const hasDecimalSeparator = value.includes(decimalSeparator) || value.includes('.');
+  const isDotThousand = thousandSeparator === '.';
+  
+  let hasDecimalSeparator = value.includes(decimalSeparator);
+  
+  if (!isDotThousand && value.includes('.')) {
+      hasDecimalSeparator = true;
+  }
   
   const rawDigits = value.replace(/[^0-9]/g, '');
   
@@ -59,7 +65,11 @@ export function processCurrency(
   let finalDisplayValue = '';
 
   if (hasDecimalSeparator) {
-     const separator = value.includes(decimalSeparator) ? decimalSeparator : '.';
+     let separator = decimalSeparator;
+     if (!value.includes(decimalSeparator) && value.includes('.') && !isDotThousand) {
+         separator = '.';
+     }
+
      const parts = value.split(separator);
      const integerPart = parts[0].replace(/[^0-9]/g, '');
      let decimalPart = parts[1]?.replace(/[^0-9]/g, '') || '';
@@ -94,7 +104,6 @@ export function processCurrency(
           }
       }
 
-      // Handle decimal separator case
       const lastChar = value[selectionStart - 1];
       if (lastChar === decimalSeparator || lastChar === '.') {
           const separatorIndex = finalDisplayValue.indexOf(decimalSeparator);

@@ -5,6 +5,7 @@ import { FieldValues, Path, PathValue } from 'react-hook-form';
 import { processInput } from '../core/engine';
 import { VALIDATORS } from '../core/logic';
 import { PRESETS } from '../core/presets';
+import { formatCurrency } from '../core/strategies/currency';
 import { BetiField, BetiFields, BetiOptions, BetiPreset, BetiSchema, UseBetiProps } from '../types';
 import { mergeRefs } from '../utils/ref';
 
@@ -27,7 +28,12 @@ export function useBeti<
       const { name, position } = cursorRequestRef.current;
       const input = fieldRefs.current[name];
       if (input) {
-        input.setSelectionRange(position, position);
+        const type = input.type;
+        const supportsSelection = /text|search|url|tel|password/i.test(type);
+        
+        if (supportsSelection) {
+           input.setSelectionRange(position, position);
+        }
       }
       cursorRequestRef.current = null;
     }
@@ -54,7 +60,6 @@ export function useBeti<
     return options;
   }, [getValues, schema]);
 
-  // Sync input values with RHF values (Lazy Initialization & External Updates)
   useLayoutEffect(() => {
     for (const key in schema) {
       const input = fieldRefs.current[key];
@@ -70,7 +75,14 @@ export function useBeti<
         const stringValue = String(formValue);
         const options = getMaskOptions(config);
         const effectiveOptions = getEffectiveOptions(options, stringValue);
-        const { displayValue } = processInput(stringValue, effectiveOptions);
+        
+        let displayValue = '';
+        if (effectiveOptions.currency) {
+            displayValue = formatCurrency(stringValue, effectiveOptions.currency);
+        } else {
+            const result = processInput(stringValue, effectiveOptions);
+            displayValue = result.displayValue;
+        }
 
         if (input.value !== displayValue) {
           input.value = displayValue;
@@ -114,7 +126,10 @@ export function useBeti<
         shouldTouch: true 
     });
 
-    cursorRequestRef.current = { name, position: cursorPosition };
+    const supportsSelection = /text|search|url|tel|password/i.test(inputElement.type);
+    if (supportsSelection) {
+       cursorRequestRef.current = { name, position: cursorPosition };
+    }
   }, [setValue, getValues, getEffectiveOptions]);
 
   const createChangeHandler = useCallback(
@@ -205,7 +220,14 @@ export function useBeti<
       const formValue = getValues(fieldName);
       const stringValue = formValue !== undefined && formValue !== null ? String(formValue) : '';
       const effectiveOptions = getEffectiveOptions(options, stringValue);
-      const { displayValue } = processInput(stringValue, effectiveOptions);
+      
+      let displayValue = '';
+      if (effectiveOptions.currency) {
+          displayValue = formatCurrency(stringValue, effectiveOptions.currency);
+      } else {
+          const result = processInput(stringValue, effectiveOptions);
+          displayValue = result.displayValue;
+      }
 
       const combinedRef = mergeRefs(rhfRef, (el: HTMLInputElement | null) => {
         fieldRefs.current[key] = el;
@@ -239,8 +261,6 @@ export function useBeti<
         ...cleanRest,
         name,
         value: displayValue,
-        rawValue: stringValue,
-        ref: combinedRef,
         onChange: handleChange,
         onKeyDown: handleKeyDown,
         onCompositionStart: handleCompositionStart,
@@ -253,6 +273,8 @@ export function useBeti<
         'aria-invalid': !!errors[key],
         'aria-describedby': options.mask ? `${name}-description` : undefined,
         title: options.mask,
+        ref: combinedRef,
+        rawValue: stringValue,
       };
 
       fields[key as keyof TSchema] = fieldObj as any;

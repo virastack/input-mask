@@ -80,7 +80,6 @@ describe("Core Engine", () => {
     });
 
     it("should format with custom precision", () => {
-      // Input treated as integer, so precision doesn't add decimals if not present
       expect(formatCurrency("123456", { precision: 3 })).toBe("123.456");
     });
   });
