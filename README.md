@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./public/hero.jpg" alt="Vira Stack Mask" />
+  <img src="./public/mask.jpg" alt="Vira Stack Mask" />
 </div>
 
 <br />
